@@ -88,12 +88,12 @@ body {
     margin-top: 0;
     list-style: none;
     width: 500px;
-    height: 200px;
+    height: auto;
 
     position:absolute;
     border-radius: 10px;
     /*margin-left: 20px;*/
-    /*background-color: purple;*/
+    /*background-color: rgba(252, 252, 252, 0.62);*/
 }
 .list ul{
     display: flex;
@@ -103,27 +103,24 @@ body {
 }
 .list ul li{
     list-style: none;
-    float: left;
-    border-radius: 100%;
-    width: 50px;
-    height: 50px;
-    background-color: rgb(203, 203, 203);
-    border: rgba(46, 58, 255, 0.49) solid 2px;
-    transform: translate(-50%);
+    width: 125px;
+    height: 75px;
+    border-radius: 20px;
+    background-color: rgba(180, 180, 180, 0.87);
+    border: rgba(255, 255, 255, 0.49) solid 2px;
+    /*transform: translate(-50%);*/
 
-    margin: 0 0 -1px 20px;
+    margin: 0 0 0 25px;
     position: relative;
-    z-index: 0;
-
     text-align: center;
 }
 .list ul li img{
-    top:9px;
+    top:50%;
     position: relative;
-    /*transform: translate(-50%);*/
+    transform: translate(0,-50%);
 }
 .list ul li:hover{
-    scale: 130%;
+    background-color: rgba(0, 15, 255, 0.49);
     animation: linear;
 }
 
@@ -142,4 +139,5 @@ body {
     margin-top: 0;
     font-family: youyuan;
     color: #cccccc;
+    font-size: 25px;
 }
