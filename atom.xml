@@ -1,0 +1,567 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://751200.github.io</id>
+    <title>也没想好</title>
+    <subtitle></subtitle>
+    <icon>https://751200.github.io/assets/favicon.ico</icon>
+    <link href="https://751200.github.io" />
+    <author>
+      <name>751200</name>
+    </author>
+    <updated>2026-03-12T09:00:00.000Z</updated>
+    <entry>
+        <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84/</id>
+        <title>反射</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84/"/>
+        <content type="html">&lt;h2 id=&#34;反射基础&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#反射基础&#34;&gt;#&lt;/a&gt; 反射基础&lt;/h2&gt;
+&lt;h3 id=&#34;rttirun-time-type-identification运行时类型识别&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#rttirun-time-type-identification运行时类型识别&#34;&gt;#&lt;/a&gt; RTTI（Run-Time Type Identification）运行时类型识别&lt;/h3&gt;
+&lt;p&gt;在运行的时候才去知道对象的类型和类的信息，主要有两种方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;传统，编译时就知道所有的类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;Animal&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; animal&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt; new&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt; Dog&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;反射，运行时再去发现和使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;String&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; className&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt; &#34;&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt;com.demo.Dog&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;Class&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&amp;#x3C;&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;?&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; clazz&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; Class&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;forName&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;className&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;Object&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; obj&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; clazz&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;getDeclaredConstructor&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;newInstance&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;class类&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#class类&#34;&gt;#&lt;/a&gt; Class类&lt;/h2&gt;
+&lt;p&gt;Class类是一种特别的类，它的类名就是Class也同样被class关键字修饰。&lt;/p&gt;
+</content>
+        <category term="Java" scheme="https://751200.github.io/categories/Java/" />
+        <category term="反射" scheme="https://751200.github.io/categories/Java/%E5%8F%8D%E5%B0%84/" />
+        <category term="Java" scheme="https://751200.github.io/tags/Java/" />
+        <category term="反射" scheme="https://751200.github.io/tags/%E5%8F%8D%E5%B0%84/" />
+        <updated>2026-03-12T09:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88/Collection/</id>
+        <title>Collection</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88/Collection/"/>
+        <content type="html">&lt;h2 id=&#34;arraylist-和linkedlist的区别是什么&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#arraylist-和linkedlist的区别是什么&#34;&gt;#&lt;/a&gt; ArrayList 和LinkedList的区别是什么&lt;/h2&gt;
+&lt;h3 id=&#34;底层数据结构&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#底层数据结构&#34;&gt;#&lt;/a&gt; 底层数据结构&lt;/h3&gt;
+&lt;p&gt;● ArrayList 是动态数组的数据结构实现&lt;/p&gt;
+&lt;p&gt;● LinkedList 是双向链表的数据结构实现&lt;/p&gt;
+&lt;h3 id=&#34;操作数据效率&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#操作数据效率&#34;&gt;#&lt;/a&gt; 操作数据效率&lt;/h3&gt;
+&lt;p&gt;● ArrayList按照下标查询的时间复杂度O(1)【内存是连续的,根据寻址公式】,LinkedList不支持下标查询查找(未知索引):ArrayList需要遍历,链表也需要链表,时间复杂度都是O(n)&lt;br /&gt;
+新增和删除&lt;br /&gt;
+● ArrayList尾部插入和删除,时间复杂度是O(1);其他部分增删需要挪动数组,时间复杂度是O(n)&lt;br /&gt;
+● LinkedList头尾节点增删时间复杂度是O(1),其他都需要遍历链表,时间复杂度是O(n)&lt;/p&gt;
+&lt;h3 id=&#34;空间占用&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#空间占用&#34;&gt;#&lt;/a&gt; 空间占用&lt;/h3&gt;
+&lt;p&gt;ArrayList底层是数组，内存连续，节省内存&lt;br /&gt;
+LinkedList是双向链表，需要存储数据和两个指针，更占用内存&lt;/p&gt;
+&lt;h3 id=&#34;线程安全&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#线程安全&#34;&gt;#&lt;/a&gt; 线程安全&lt;/h3&gt;
+&lt;p&gt;● ArrayList和LinkedList都不是线程安全的如果需要保证线程安全,有两种方案:&lt;/p&gt;
+&lt;p&gt;● 在方法内使用,局部变量则是线程安全的&lt;/p&gt;
+&lt;p&gt;● 使用线程安全的ArrayList和LinkedList&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;List&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&amp;#x3C;&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;Object&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; syncArrayList&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; Collections&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;synchronizedList&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt;new&lt;/span&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt; ArrayList&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&amp;#x3C;&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;List&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&amp;#x3C;&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;Object&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; syncLinkedList&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; Collections&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;synchronizedList&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt;new&lt;/span&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt; LinkedList&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&amp;#x3C;&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+</content>
+        <category term="Java" scheme="https://751200.github.io/categories/Java/" />
+        <category term="集合" scheme="https://751200.github.io/categories/Java/%E9%9B%86%E5%90%88/" />
+        <category term="Java" scheme="https://751200.github.io/tags/Java/" />
+        <category term="Collection" scheme="https://751200.github.io/tags/Collection/" />
+        <category term="集合" scheme="https://751200.github.io/tags/%E9%9B%86%E5%90%88/" />
+        <updated>2026-03-12T09:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-CAS/</id>
+        <title>线程安全-CAS</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-CAS/"/>
+        <content type="html">&lt;p&gt;CAS = Compare And Swap（比较并交换）&lt;/p&gt;
+&lt;p&gt;是典型的乐观锁&lt;/p&gt;
+&lt;h2 id=&#34;它的原子性&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#它的原子性&#34;&gt;#&lt;/a&gt; 它的原子性&lt;/h2&gt;
+&lt;p&gt;CAS操作是CPU的原子指令，所以&lt;strong&gt;不会被线程切换打断&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;java中的cas&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#java中的cas&#34;&gt;#&lt;/a&gt; java中的CAS&lt;/h2&gt;
+&lt;p&gt;Atomic类都是CAS的实现&lt;/p&gt;
+&lt;h2 id=&#34;优点&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#优点&#34;&gt;#&lt;/a&gt; 优点&lt;/h2&gt;
+&lt;h3 id=&#34;1️⃣-无锁性能高&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1️⃣-无锁性能高&#34;&gt;#&lt;/a&gt; 1️⃣ 无锁（性能高）&lt;/h3&gt;
+&lt;p&gt;CAS 是 &lt;strong&gt;非阻塞算法&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;不会像 &lt;code&gt;synchronized&lt;/code&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;线程阻塞&lt;/li&gt;
+&lt;li&gt;线程唤醒&lt;/li&gt;
+&lt;li&gt;上下文切换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以性能通常更高。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3 id=&#34;2️⃣-不会发生死锁&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2️⃣-不会发生死锁&#34;&gt;#&lt;/a&gt; 2️⃣ 不会发生死锁&lt;/h3&gt;
+&lt;p&gt;CAS 没有锁。&lt;/p&gt;
+&lt;p&gt;自然 &lt;strong&gt;不会死锁&lt;/strong&gt;。&lt;/p&gt;
+</content>
+        <category term="Java" scheme="https://751200.github.io/categories/Java/" />
+        <category term="并发" scheme="https://751200.github.io/categories/Java/%E5%B9%B6%E5%8F%91/" />
+        <category term="Java" scheme="https://751200.github.io/tags/Java/" />
+        <category term="并发" scheme="https://751200.github.io/tags/%E5%B9%B6%E5%8F%91/" />
+        <updated>2026-03-12T09:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-synchronized%E5%85%B3%E9%94%AE%E5%AD%97/</id>
+        <title>线程安全-synchronized关键字</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-synchronized%E5%85%B3%E9%94%AE%E5%AD%97/"/>
+        <content type="html">&lt;h2 id=&#34;synchronized关键字&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#synchronized关键字&#34;&gt;#&lt;/a&gt; synchronized关键字&lt;/h2&gt;
+&lt;p&gt;用于在多线程环境下保证线程的安全性，它可以保证在同一时刻只有一个线程可以进入被synchronized修饰的方法或代码块。（还好我想了一下，只保证在一个jvm进程内有效）&lt;/p&gt;
+&lt;p&gt;也就是说特性有两点，这也是&lt;strong&gt;线程安全的原理&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;互斥&lt;/p&gt;
+&lt;p&gt;同一时间只有一个线程可以进入代码块&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;可见性&lt;/p&gt;
+&lt;p&gt;必须刷新到主内存，其他线程可见&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;使用&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#使用&#34;&gt;#&lt;/a&gt; 使用&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;修饰实例方法，锁对象是&lt;strong&gt;实例this&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt; synchronized&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt; void&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt; method&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;//等价&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt; void&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt; method&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;    synchronized&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#A65E2B;--shiki-dark:#C99076&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修饰静态方法，锁对象是&lt;strong&gt;Class对象&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt; static&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt; synchronized&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt; void&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt; method&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;//等价&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;synchronized&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;ClassName&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修饰代码块，任意对象，关键在于锁的是对象，不是代码&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;synchronized(lock) &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    // critical section&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;底层实现&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#底层实现&#34;&gt;#&lt;/a&gt; 底层实现&lt;/h3&gt;
+&lt;p&gt;获取锁的过程就是获取monitor对象的过程&lt;/p&gt;
+&lt;p&gt;monitor对象的话里面有三个队列&lt;/p&gt;
+&lt;p&gt;Monitor&lt;br /&gt;
+├── Owner (当前持有锁的线程)&lt;br /&gt;
+├── EntryList (等待锁的线程)&lt;br /&gt;
+└── WaitSet (调用 wait() 的线程)&lt;/p&gt;
+&lt;p&gt;当调用notify()方法之后，WaitSet里面的对象会重新进入Entrylist里面，重新竞争锁&lt;/p&gt;
+&lt;p&gt;JVM字节码中，获取monitor依靠这两个jvm指令&lt;br /&gt;
+&lt;code&gt;monitorenter&lt;/code&gt;&lt;br /&gt;
+&lt;code&gt;monitorexit&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;monitorexit&lt;/code&gt;指令会存在两个，就像try catch中的finally一样，防止因为错误而不解锁&lt;/p&gt;
+&lt;p&gt;线程进入&lt;br /&gt;
+↓&lt;br /&gt;
+尝试获得Monitor&lt;br /&gt;
+↓&lt;br /&gt;
+成功 → 执行代码&lt;br /&gt;
+失败 → 阻塞&lt;br /&gt;
+↓&lt;br /&gt;
+释放Monitor&lt;/p&gt;
+&lt;h3 id=&#34;锁升级&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#锁升级&#34;&gt;#&lt;/a&gt; 锁升级&lt;/h3&gt;
+&lt;p&gt;无锁&lt;br /&gt;
+↓（一直是A线程来，不用cas）&lt;br /&gt;
+偏向锁&lt;br /&gt;
+↓(出现了B线程,CAS + 自旋获取锁）&lt;br /&gt;
+轻量级锁&lt;br /&gt;
+↓(自旋很多次仍然拿不到锁，使用Monitor，会阻塞线程，进入内核态）&lt;br /&gt;
+重量级锁&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;锁&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;偏向锁&lt;/td&gt;
+&lt;td&gt;只有一个线程&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;轻量级锁&lt;/td&gt;
+&lt;td&gt;少量竞争&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;重量级锁&lt;/td&gt;
+&lt;td&gt;多线程竞争&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;对象头mark-wordoptional&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#对象头mark-wordoptional&#34;&gt;#&lt;/a&gt; 对象头mark word（optional）&lt;/h3&gt;
+&lt;p&gt;在64位JVM中，大概存：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;锁信息&lt;br /&gt;
+GC年龄&lt;br /&gt;
+hashcode&lt;br /&gt;
+线程ID&lt;br /&gt;
+偏向锁标志&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;加锁就是修改对象头的线程ID&lt;/p&gt;
+</content>
+        <category term="Java" scheme="https://751200.github.io/categories/Java/" />
+        <category term="并发" scheme="https://751200.github.io/categories/Java/%E5%B9%B6%E5%8F%91/" />
+        <category term="Java" scheme="https://751200.github.io/tags/Java/" />
+        <category term="并发" scheme="https://751200.github.io/tags/%E5%B9%B6%E5%8F%91/" />
+        <updated>2026-03-12T09:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/</id>
+        <title>线程</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/"/>
+        <content type="html">&lt;h3 id=&#34;线程的创建&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#线程的创建&#34;&gt;#&lt;/a&gt; 线程的创建&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;继承 Thread 类（Java单继承机制，不推荐）。&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//就是继承，重写run，然后start()&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;class MyThread extends Thread &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    @Override&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    public void run() &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        System.out.println(&#34;线程执行&#34;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;new MyThread().start();&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实现 Runnable 接口（最常用，无返回值）。&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//Runnable就是Thread构造函数的一个参数&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;class MyRunnable implements Runnable &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    @Override&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    public void run() &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        System.out.println(&#34;线程执行&#34;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;new Thread(new MyRunnable()).start();&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实现 Callable 接口配合 FutureTask，(有返回值，能抛出异常）。&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//这里相当于上面的run方法，返回一个3&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;Callable&amp;#x3C;Integer&gt; task = () -&gt; 1 + 2;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//futureTask是适配器，因为Thread构造要传Runnable&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;FutureTask&amp;#x3C;Integer&gt; futureTask = new FutureTask&amp;#x3C;&gt;(task);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;new Thread(futureTask).start();&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;Integer result = futureTask.get();&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过线程池创建（真实项目中的唯一规范做法）。&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;ExecutorService&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; pool&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; Executors&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;newFixedThreadPool&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2F798A;--shiki-dark:#4C9A91&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;pool&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;submit&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; -&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;    System&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt;线程执行&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;线程的生命周期&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#线程的生命周期&#34;&gt;#&lt;/a&gt; 线程的生命周期&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;新建&lt;/li&gt;
+&lt;li&gt;运行&lt;/li&gt;
+&lt;li&gt;阻塞&lt;/li&gt;
+&lt;li&gt;等待&lt;/li&gt;
+&lt;li&gt;超时等待&lt;/li&gt;
+&lt;li&gt;终止&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;常见方法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#常见方法&#34;&gt;#&lt;/a&gt; 常见方法&lt;/h2&gt;
+&lt;h3 id=&#34;sleep&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#sleep&#34;&gt;#&lt;/a&gt; sleep()&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;让线程休眠&lt;/li&gt;
+&lt;li&gt;不释放锁&lt;/li&gt;
+&lt;li&gt;Thread类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;wait&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#wait&#34;&gt;#&lt;/a&gt; wait()&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;让线程进入等待状态&lt;/li&gt;
+&lt;li&gt;会释放锁&lt;/li&gt;
+&lt;li&gt;会被notify()/notifyAll()唤醒&lt;/li&gt;
+&lt;li&gt;必须在synchronized中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;wait和sleep的区别&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#wait和sleep的区别&#34;&gt;#&lt;/a&gt; wait()和sleep()的区别&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;对比点&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;wait()&lt;/code&gt;&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;sleep()&lt;/code&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;所属类&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Object&lt;/code&gt; 类的方法&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Thread&lt;/code&gt; 类的方法&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;是否释放锁&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;会释放锁&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;不会释放锁&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;使用位置&lt;/td&gt;
+&lt;td&gt;必须在 &lt;strong&gt;synchronized 同步块/方法&lt;/strong&gt; 中使用&lt;/td&gt;
+&lt;td&gt;可以在任何地方使用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;唤醒方式&lt;/td&gt;
+&lt;td&gt;需要 &lt;code&gt;notify()&lt;/code&gt; / &lt;code&gt;notifyAll()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;时间到了自动恢复&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;使用目的&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;线程间通信&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;让线程休眠一段时间&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;join&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#join&#34;&gt;#&lt;/a&gt; join()&lt;/h3&gt;
+&lt;p&gt;等待某个线程执行完&lt;/p&gt;
+&lt;h3 id=&#34;notify和notifyall&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#notify和notifyall&#34;&gt;#&lt;/a&gt; notify()和notifyAll()&lt;/h3&gt;
+&lt;p&gt;随机唤醒一个等待线程和唤醒所有等待线程&lt;/p&gt;
+&lt;h4 id=&#34;为什么必须在synchronized中&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#为什么必须在synchronized中&#34;&gt;#&lt;/a&gt; 为什么必须在synchronized中&lt;/h4&gt;
+&lt;p&gt;IllegalMonitorStateException异常&lt;/p&gt;
+&lt;p&gt;因为它们操作的是对象的 Monitor 等待队列，只有持有对象锁的线程才能调用&lt;/p&gt;
+</content>
+        <category term="Java" scheme="https://751200.github.io/categories/Java/" />
+        <category term="并发" scheme="https://751200.github.io/categories/Java/%E5%B9%B6%E5%8F%91/" />
+        <category term="Java" scheme="https://751200.github.io/tags/Java/" />
+        <category term="并发" scheme="https://751200.github.io/tags/%E5%B9%B6%E5%8F%91/" />
+        <updated>2026-03-12T09:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-volatile%E5%85%B3%E9%94%AE%E5%AD%97/</id>
+        <title>线程安全-volatile关键字</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-volatile%E5%85%B3%E9%94%AE%E5%AD%97/"/>
+        <content type="html">&lt;h2 id=&#34;核心语义&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#核心语义&#34;&gt;#&lt;/a&gt; 核心语义&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;可见性&lt;/li&gt;
+&lt;li&gt;有序性（禁止指令重排）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;volatile 不保证原子性&lt;/p&gt;
+&lt;h2 id=&#34;volatile的可见性&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#volatile的可见性&#34;&gt;#&lt;/a&gt; volatile的可见性&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;线程修改变量&lt;br /&gt;
+必须立即写回主内存&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;其他线程：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;读取变量&lt;br /&gt;
+必须从主内存读取&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;jmmjava内存模型的happens-before&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#jmmjava内存模型的happens-before&#34;&gt;#&lt;/a&gt; JMM（java内存模型）的happens-before&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;volatile&lt;/code&gt; 实际上是通过 &lt;strong&gt;happens-before 规则&lt;/strong&gt;工作的。&lt;/p&gt;
+&lt;p&gt;volatile 写&lt;br /&gt;
+happens-before&lt;br /&gt;
+volatile 读&lt;/p&gt;
+&lt;p&gt;为了实现这个 happens-before 关系，JVM 会在 &lt;code&gt;volatile&lt;/code&gt; 操作周围插入 &lt;strong&gt;内存屏障（memory barrier）&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;内存屏障一般有四种&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;LoadLoad&lt;/li&gt;
+&lt;li&gt;StoreStore&lt;/li&gt;
+&lt;li&gt;LoadStore&lt;/li&gt;
+&lt;li&gt;StoreLoad&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;意思：（屏障前面的什么操作）（屏障后面的什么操作）不能重排序，load-读，store-写&lt;/p&gt;
+&lt;h2 id=&#34;不保证原子性&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#不保证原子性&#34;&gt;#&lt;/a&gt; 不保证原子性&lt;/h2&gt;
+&lt;p&gt;多线程时可能这样：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;线程A 读取 count=0&lt;br /&gt;
+线程B 读取 count=0&lt;br /&gt;
+线程A 写回 1&lt;br /&gt;
+线程B 写回 1&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;最终结果：&lt;/p&gt;
+&lt;p&gt;count = 1&lt;/p&gt;
+&lt;p&gt;也就是说&lt;strong&gt;线程不安全&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;volatile&lt;/code&gt; 适合：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;状态标志&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;单次写，多次读&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不依赖当前值的赋值&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="Java" scheme="https://751200.github.io/categories/Java/" />
+        <category term="并发" scheme="https://751200.github.io/categories/Java/%E5%B9%B6%E5%8F%91/" />
+        <category term="Java" scheme="https://751200.github.io/tags/Java/" />
+        <category term="并发" scheme="https://751200.github.io/tags/%E5%B9%B6%E5%8F%91/" />
+        <updated>2026-03-12T09:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88/Collection/ArrayList/</id>
+        <title>ArrayList</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88/Collection/ArrayList/"/>
+        <content type="html">&lt;h2 id=&#34;变量&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#变量&#34;&gt;#&lt;/a&gt; 变量&lt;/h2&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;	//默认的容量大小，这个会赋值给size&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    private static final int DEFAULT_CAPACITY = 10;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt; 	//新建对象时传入的size为0就会用这给elementData赋值&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    private static final Object[] EMPTY_ELEMENTDATA = &amp;#123;&amp;#125;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    //无参构造用，新对象会先分配空数组而不是10大小的数组&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    private static final Object[] DEFAULT_EMPTY_ELEMENTDATA = &amp;#123;&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    //数据本体了&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    transient Object[] elementData;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;	//记录当前大小&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    private int size;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;构造函数&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#构造函数&#34;&gt;#&lt;/a&gt; 构造函数&lt;/h2&gt;
+&lt;h3 id=&#34;指定容量arraylistint-initialcapacity&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#指定容量arraylistint-initialcapacity&#34;&gt;#&lt;/a&gt; 指定容量ArrayList(int initialCapacity)&lt;/h3&gt;
+&lt;p&gt;指定 initialCapacity&amp;gt;0时就是新建数组，&lt;/p&gt;
+&lt;p&gt;=0时就赋值成员变量&lt;code&gt;EMPTY_ELEMENTDATA&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;   	/**&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;     * Constructs an empty list with the specified initial capacity.&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;     *&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;     * &lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt;@param&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;  initialCapacity&lt;/span&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;  the initial capacity of the list&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;     * &lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt;@throws&lt;/span&gt;&lt;span style=&#34;color:#2E8F82;--shiki-dark:#5DA994&#34;&gt; IllegalArgumentException&lt;/span&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt; if the specified initial capacity&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;     *         is negative&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;     */&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;     public&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt; ArrayList&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt; initialCapacity&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt;        if&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;initialCapacity &lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#2F798A;--shiki-dark:#4C9A91&#34;&gt; 0&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;        	//指定了大小，新建对应大小的数组&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A65E2B;--shiki-dark:#C99076&#34;&gt;            this&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;elementData&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt; new&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt; Object&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;initialCapacity&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt; else&lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt; if&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;initialCapacity &lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#2F798A;--shiki-dark:#4C9A91&#34;&gt; 0&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A0ADA0;--shiki-dark:#758575DD&#34;&gt;        	//大小为0赋值空数组&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#A65E2B;--shiki-dark:#C99076&#34;&gt;            this&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;elementData&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt; EMPTY_ELEMENTDATA&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt; else&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt;            throw&lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt; new&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt; IllegalArgumentException&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt;Illegal Capacity: &lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;+&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;                                               initialCapacity&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;无参arraylist&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#无参arraylist&#34;&gt;#&lt;/a&gt; 无参ArrayList()&lt;/h3&gt;
+&lt;p&gt;新建的时候是赋值成员变量的默认空数组&lt;code&gt;DEFAULTCAPACITY_EMPTY_ELEMENTDATA&lt;/code&gt;，&lt;/p&gt;
+&lt;p&gt;这里是没有设置size的&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    /**&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;     * Constructs an empty list with an initial capacity of ten.&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;     */&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    public ArrayList() &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    	//新建的时候是空的&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;从collection对象构建arraylistcollection-extends-e-c&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#从collection对象构建arraylistcollection-extends-e-c&#34;&gt;#&lt;/a&gt; 从collection对象构建&lt;code&gt;ArrayList(Collection&amp;lt;? extends E&amp;gt; c)&lt;/code&gt;&lt;/h3&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    /**&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;     * Constructs a list containing the elements of the specified&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;     * collection, in the order they are returned by the collection&#39;s&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;     * iterator.&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;     *&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;     * @param c the collection whose elements are to be placed into this list&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;     * @throws NullPointerException if the specified collection is null&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;     */&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    public ArrayList(Collection&amp;#x3C;? extends E&gt; c) &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        elementData = c.toArray();&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        if ((size = elementData.length) != 0) &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            // c.toArray might (incorrectly) not return Object[] (see 6260652)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            if (elementData.getClass() != Object[].class)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;                elementData = Arrays.copyOf(elementData, size, Object[].class);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        &amp;#125; else &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            // replace with empty array.&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            this.elementData = EMPTY_ELEMENTDATA;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        &amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;扩容机制&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#扩容机制&#34;&gt;#&lt;/a&gt; 扩容机制&lt;/h2&gt;
+&lt;h3 id=&#34;第一次扩容&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#第一次扩容&#34;&gt;#&lt;/a&gt; 第一次扩容&lt;/h3&gt;
+&lt;p&gt;可以看到默认无参，以及指定大小为0的情况下，虽说赋予的数组不同但都是空数组&lt;/p&gt;
+&lt;p&gt;最终扩容后为10大小&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;	public boolean add(E e)&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;		//确保内部容量&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;		ensureCapacityInternal(size+1)//这里第一次size是0，所以传入参数为1&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;		elementData[size++] = e;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;		return true;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;	&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;	private void ensureCapacityInternal(int minCapacity)&amp;#123;//这里上面传如参数是1&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;		ensureExplicitCapacity(calculateCapacity(elementData,minCapacity))&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;	&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;	private static int calculateCapacity(Object[] elementData, int minCapacity)&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;		if(elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA)&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;			return Math.max(DEFAULT_CAPACITY,minCapacity);//(10,1)无参 第一次的时候&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;		&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;		return minCapacity&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;	&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;  private void ensureExplicitCapacity(int minCapacity) &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        modCount++;//用来并发快速失败&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        // overflow-conscious code&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        if (minCapacity - elementData.length &gt; 0)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            grow(minCapacity);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    private void grow(int minCapacity) &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        int oldCapacity = elementData.length;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        if (newCapacity - minCapacity &amp;#x3C; 0)//第一次会进&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            newCapacity = minCapacity;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        if (newCapacity - MAX_ARRAY_SIZE &gt; 0)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            newCapacity = hugeCapacity(minCapacity);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            //复制数组到新空间&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        elementData = Arrays.copyOf(elementData, newCapacity);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    private static int hugeCapacity(int minCapacity) &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        if (minCapacity &amp;#x3C; 0) // overflow&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            throw new OutOfMemoryError();&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        return (minCapacity &gt; MAX_ARRAY_SIZE) ?&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            Integer.MAX_VALUE :&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;            MAX_ARRAY_SIZE;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;第二次扩容添加11个对象时&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#第二次扩容添加11个对象时&#34;&gt;#&lt;/a&gt; 第二次扩容（添加11个对象时）&lt;/h3&gt;
+&lt;p&gt;参考上面吧，最终变15&lt;/p&gt;
+&lt;h2 id=&#34;数组和list之间的转换&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#数组和list之间的转换&#34;&gt;#&lt;/a&gt; 数组和List之间的转换&lt;/h2&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;List&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&amp;#x3C;&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;String&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; list&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; Arrays&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;asList&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt;String&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; array&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; list&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;toArray&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1E754F;--shiki-dark:#4D9375&#34;&gt;new&lt;/span&gt;&lt;span style=&#34;color:#AB5959;--shiki-dark:#CB7676&#34;&gt; String&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;list&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;size&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;拷贝&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#拷贝&#34;&gt;#&lt;/a&gt; 拷贝&lt;/h3&gt;
+&lt;p&gt;● 用Arrays.asList转List后,如果修改了数组内容,list受影响吗&lt;/p&gt;
+&lt;p&gt;影响，只是吧list对象里面的elementData指向了该数组&lt;/p&gt;
+&lt;p&gt;● List用toArray转数组后,如果修改了List内容,数组受影响吗&lt;/p&gt;
+&lt;p&gt;不影响&lt;/p&gt;
+&lt;h2 id=&#34;快速失败机制&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#快速失败机制&#34;&gt;#&lt;/a&gt; 快速失败机制&lt;/h2&gt;
+&lt;p&gt;内部变量modCount（记录集合被修改的次数）&lt;/p&gt;
+&lt;p&gt;expectedModCount 是&lt;strong&gt;迭代器（Iterator）内部特有的一个变量&lt;/strong&gt;。它就像是迭代器在开始工作前，给集合的状态拍的一张**“快照”**&lt;/p&gt;
+&lt;p&gt;当执行某些操作，比如遍历移除的时候会先执行checkForCommodification()方法，最后modCount++&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;final void checkForComodification() &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    // 迭代器开始对比：集合现在的修改次数 vs 我小本本上记的次数&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    if (modCount != expectedModCount)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        throw new ConcurrentModificationException(); // 如果对不上，直接罢工报错！&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+</content>
+        <category term="Java" scheme="https://751200.github.io/categories/Java/" />
+        <category term="反射" scheme="https://751200.github.io/categories/Java/%E5%8F%8D%E5%B0%84/" />
+        <category term="Java" scheme="https://751200.github.io/tags/Java/" />
+        <category term="反射" scheme="https://751200.github.io/tags/%E5%8F%8D%E5%B0%84/" />
+        <category term="ArrayList" scheme="https://751200.github.io/tags/ArrayList/" />
+        <updated>2026-03-12T09:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://751200.github.io/2026/03/12/hello-world/</id>
+        <title>Hello World</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/12/hello-world/"/>
+        <content type="html">&lt;p&gt;Welcome to &lt;a href=&#34;https://hexo.io/&#34;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&#34;https://hexo.io/docs/&#34;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&#34;https://hexo.io/docs/troubleshooting.html&#34;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&#34;https://github.com/hexojs/hexo/issues&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;quick-start&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#quick-start&#34;&gt;#&lt;/a&gt; Quick Start&lt;/h2&gt;
+&lt;h3 id=&#34;create-a-new-post&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#create-a-new-post&#34;&gt;#&lt;/a&gt; Create a new post&lt;/h3&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;$&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt; hexo&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt; new&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt; &#34;&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt;My New Post&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/writing.html&#34;&gt;Writing&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;run-server&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#run-server&#34;&gt;#&lt;/a&gt; Run server&lt;/h3&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;$&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt; hexo&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt; server&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/server.html&#34;&gt;Server&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;generate-static-files&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#generate-static-files&#34;&gt;#&lt;/a&gt; Generate static files&lt;/h3&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;$&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt; hexo&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt; generate&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/generating.html&#34;&gt;Generating&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;deploy-to-remote-sites&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#deploy-to-remote-sites&#34;&gt;#&lt;/a&gt; Deploy to remote sites&lt;/h3&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;$&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt; hexo&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt; deploy&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;More info: &lt;a href=&#34;https://hexo.io/docs/one-command-deployment.html&#34;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
+</content>
+        <updated>2026-03-12T07:53:36.771Z</updated>
+    </entry>
+</feed>

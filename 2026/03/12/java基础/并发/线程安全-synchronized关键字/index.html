@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="也没想好" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="也没想好" type="application/atom+xml"><link rel="alternate" type="application/json" title="也没想好" href="https://751200.github.io/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-3SUQTMMO.js"><link rel="modulepreload" href="/js/copy-tex-4MMYP6OI.js"><link rel="modulepreload" href="/js/post-LBTOPF7A.js"><link rel="modulepreload" href="/js/chunk-36ZHZPPZ.js"><link rel="modulepreload" href="/js/chunk-LAEBCM5O.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><link rel="preload" href="./assets/101166621.jpg" as="image" fetchpriority="high"><link rel="preload" href="./assets/101166621.jpg" as="image" fetchpriority="high"><link rel="preload" href="./assets/101166621.jpg" as="image" fetchpriority="high"><link rel="preload" href="./assets/101166621.jpg" as="image" fetchpriority="high"><link rel="preload" href="./assets/101166621.jpg" as="image" fetchpriority="high"><link rel="preload" href="./assets/101166621.jpg" as="image" fetchpriority="high"><meta name="keywords" content="Java,"><link rel="canonical" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-synchronized%E5%85%B3%E9%94%AE%E5%AD%97/"><link rel="stylesheet" href="/css/post.css?v=0.5.4"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.4"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>线程安全-synchronized关键字</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="pagefind_mount"></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">线程安全-synchronized关键字</h1><div class="meta"><span class="item" title="作成日：2026-03-12 17:00:00"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">投稿日</span><time itemprop="dateCreated datePublished" datetime="2026-03-12T17:00:00+08:00">2026-03-12</time></span><span class="item" title="単語数"><span class="icon"><i class="ic i-pen"></i></span><span class="text">単語数</span><span>1.3k</span><span class="text">単語</span></span><span class="item" title="読書の時間"><span class="icon"><i class="ic i-clock"></i></span><span class="text">読書の時間</span><span>1 分</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="ナビゲーションバーの切り替え"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">没想好写什么</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;./assets/101166621.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;./assets/101166621.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;./assets/101166621.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;./assets/101166621.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;./assets/101166621.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;./assets/101166621.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">ホーム</a></span><i class="ic i-angle-right"></i><span itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/Java/" itemprop="item" rel="index" title="カテゴリJava"><span itemprop="name">Java<meta itemprop="position" content="0"></span></a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/Java/%E5%B9%B6%E5%8F%91/" itemprop="item" rel="index" title="カテゴリ并发"><span itemprop="name">并发<meta itemprop="position" content="1"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" data-pagefind-body="data-pagefind-body" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-synchronized%E5%85%B3%E9%94%AE%E5%AD%97/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="751200"><meta itemprop="description" content=", "></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="也没想好"></span><div class="body md" itemprop="articleBody"><h2 id="synchronized关键字"><a class="anchor" href="#synchronized关键字">#</a> synchronized关键字</h2>
+<p>用于在多线程环境下保证线程的安全性，它可以保证在同一时刻只有一个线程可以进入被synchronized修饰的方法或代码块。（还好我想了一下，只保证在一个jvm进程内有效）</p>
+<p>也就是说特性有两点，这也是<strong>线程安全的原理</strong></p>
+<ul>
+<li>
+<p>互斥</p>
+<p>同一时间只有一个线程可以进入代码块</p>
+</li>
+<li>
+<p>可见性</p>
+<p>必须刷新到主内存，其他线程可见</p>
+</li>
+</ul>
+<h3 id="使用"><a class="anchor" href="#使用">#</a> 使用</h3>
+<ol>
+<li>
+<p>修饰实例方法，锁对象是<strong>实例this</strong></p>
+<pre class="shiki shiki-themes vitesse-light vitesse-dark" style="background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee" tabindex="0"><code class="language-java"><span class="line"><span style="color:#AB5959;--shiki-dark:#CB7676">public</span><span style="color:#AB5959;--shiki-dark:#CB7676"> synchronized</span><span style="color:#AB5959;--shiki-dark:#CB7676"> void</span><span style="color:#59873A;--shiki-dark:#80A665"> method</span><span style="color:#2993a3;--shiki-dark:#5eaab5">(</span><span style="color:#2993a3;--shiki-dark:#5eaab5">)</span><span style="color:#999999;--shiki-dark:#666666"> </span><span style="color:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span style="color:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="color:#A0ADA0;--shiki-dark:#758575DD">//等价</span></span>
+<span class="line"><span style="color:#AB5959;--shiki-dark:#CB7676">public</span><span style="color:#AB5959;--shiki-dark:#CB7676"> void</span><span style="color:#59873A;--shiki-dark:#80A665"> method</span><span style="color:#2993a3;--shiki-dark:#5eaab5">(</span><span style="color:#2993a3;--shiki-dark:#5eaab5">)</span><span style="color:#999999;--shiki-dark:#666666"> </span><span style="color:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span style="color:#AB5959;--shiki-dark:#CB7676">    synchronized</span><span style="color:#1e754f;--shiki-dark:#4d9375">(</span><span style="color:#A65E2B;--shiki-dark:#C99076">this</span><span style="color:#1e754f;--shiki-dark:#4d9375">)</span><span style="color:#999999;--shiki-dark:#666666"> </span><span style="color:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span style="color:#999999;--shiki-dark:#666666">    </span><span style="color:#1e754f;--shiki-dark:#4d9375">}</span></span>
+<span class="line"><span style="color:#2993a3;--shiki-dark:#5eaab5">}</span></span></code></pre>
+</li>
+<li>
+<p>修饰静态方法，锁对象是<strong>Class对象</strong></p>
+<pre class="shiki shiki-themes vitesse-light vitesse-dark" style="background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee" tabindex="0"><code class="language-java"><span class="line"><span style="color:#AB5959;--shiki-dark:#CB7676">public</span><span style="color:#AB5959;--shiki-dark:#CB7676"> static</span><span style="color:#AB5959;--shiki-dark:#CB7676"> synchronized</span><span style="color:#AB5959;--shiki-dark:#CB7676"> void</span><span style="color:#59873A;--shiki-dark:#80A665"> method</span><span style="color:#2993a3;--shiki-dark:#5eaab5">(</span><span style="color:#2993a3;--shiki-dark:#5eaab5">)</span><span style="color:#999999;--shiki-dark:#666666"> </span><span style="color:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span style="color:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="color:#A0ADA0;--shiki-dark:#758575DD">//等价</span></span>
+<span class="line"><span style="color:#AB5959;--shiki-dark:#CB7676">synchronized</span><span style="color:#2993a3;--shiki-dark:#5eaab5">(</span><span style="color:#B07D48;--shiki-dark:#BD976A">ClassName</span><span style="color:#999999;--shiki-dark:#666666">.</span><span style="color:#B07D48;--shiki-dark:#BD976A">class</span><span style="color:#2993a3;--shiki-dark:#5eaab5">)</span><span style="color:#999999;--shiki-dark:#666666"> </span><span style="color:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span style="color:#2993a3;--shiki-dark:#5eaab5">}</span></span></code></pre>
+</li>
+<li>
+<p>修饰代码块，任意对象，关键在于锁的是对象，不是代码</p>
+<pre class="shiki shiki-themes vitesse-light vitesse-dark" style="background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee" tabindex="0"><code class="language-text"><span class="line"><span>synchronized(lock) {</span></span>
+<span class="line"><span>    // critical section</span></span>
+<span class="line"><span>}</span></span></code></pre>
+</li>
+</ol>
+<h3 id="底层实现"><a class="anchor" href="#底层实现">#</a> 底层实现</h3>
+<p>获取锁的过程就是获取monitor对象的过程</p>
+<p>monitor对象的话里面有三个队列</p>
+<p>Monitor<br>
+├── Owner (当前持有锁的线程)<br>
+├── EntryList (等待锁的线程)<br>
+└── WaitSet (调用 wait() 的线程)</p>
+<p>当调用notify()方法之后，WaitSet里面的对象会重新进入Entrylist里面，重新竞争锁</p>
+<p>JVM字节码中，获取monitor依靠这两个jvm指令<br>
+<code>monitorenter</code><br>
+<code>monitorexit</code></p>
+<p><code>monitorexit</code>指令会存在两个，就像try catch中的finally一样，防止因为错误而不解锁</p>
+<p>线程进入<br>
+↓<br>
+尝试获得Monitor<br>
+↓<br>
+成功 → 执行代码<br>
+失败 → 阻塞<br>
+↓<br>
+释放Monitor</p>
+<h3 id="锁升级"><a class="anchor" href="#锁升级">#</a> 锁升级</h3>
+<p>无锁<br>
+↓（一直是A线程来，不用cas）<br>
+偏向锁<br>
+↓(出现了B线程,CAS + 自旋获取锁）<br>
+轻量级锁<br>
+↓(自旋很多次仍然拿不到锁，使用Monitor，会阻塞线程，进入内核态）<br>
+重量级锁</p>
+<table>
+<thead>
+<tr>
+<th>锁</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>偏向锁</td>
+<td>只有一个线程</td>
+</tr>
+<tr>
+<td>轻量级锁</td>
+<td>少量竞争</td>
+</tr>
+<tr>
+<td>重量级锁</td>
+<td>多线程竞争</td>
+</tr>
+</tbody>
+</table>
+<h3 id="对象头mark-wordoptional"><a class="anchor" href="#对象头mark-wordoptional">#</a> 对象头mark word（optional）</h3>
+<p>在64位JVM中，大概存：</p>
+<blockquote>
+<p>锁信息<br>
+GC年龄<br>
+hashcode<br>
+线程ID<br>
+偏向锁标志</p>
+</blockquote>
+<p>加锁就是修改对象头的线程ID</p>
+<div class="tags"><a href="/tags/Java/" rel="tag"><i class="ic i-tag"></i>Java</a><a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="ic i-tag"></i>并发</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">編集日 </span><time title="修正日：2026-03-12 17:08:08" itemprop="dateModified" datetime="2026-03-12T17:08:08+08:00">2026-03-12</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>寄付</button><p>*~(￣▽￣)~[お茶]を一杯ください</p><div id="qr"><div><img loading="lazy" src="/assets/wechatpay.avif" alt="751200 WeChat 支払う"><p>WeChat 支払う</p></div><div><img loading="lazy" src="/assets/alipay.avif" alt="751200 Alipay"><p>Alipay</p></div></div></div><div id="copyright"><ul><li class="author"><strong>著者：</strong>751200<i class="ic i-at"><em>@</em></i>也没想好</li><li class="link"><strong>記事へのリンク：</strong><a href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-synchronized%E5%85%B3%E9%94%AE%E5%AD%97/" title="线程安全-synchronized关键字">https://751200.github.io/2026/03/12/java基础/并发/线程安全-synchronized关键字/</a></li><li class="license"><strong>著作権表示：</strong>このブログ内のすべての記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> の下のライセンスで保護されています。</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/" rel="prev" itemprop="url" data-background-image="https://i.imgtg.com/2023/03/09/Y0kTl.jpg" title="线程"><span class="type">前の記事</span><span class="category"><i class="ic i-flag"></i>并发</span><h3>线程</h3></a></div><div class="item right"><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-CAS/" rel="next" itemprop="url" data-background-image="https://i.imgtg.com/2023/03/09/Y0iNK.jpg" title="线程安全-CAS"><span class="type">次の記事</span><span class="category"><i class="ic i-flag"></i>并发</span><h3>线程安全-CAS</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="見出し"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#synchronized%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.</span> <span class="toc-text"> synchronized关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text"> 使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text"> 底层实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7"><span class="toc-number">1.3.</span> <span class="toc-text"> 锁升级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%A4%B4mark-wordoptional"><span class="toc-number">1.4.</span> <span class="toc-text"> 对象头mark word（optional）</span></a></li></ol></li></ol></div><div class="related panel pjax" data-title="関連記事"><ul><li><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-CAS/" rel="bookmark" title="线程安全-CAS">线程安全-CAS</a></li><li class="active"><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-synchronized%E5%85%B3%E9%94%AE%E5%AD%97/" rel="bookmark" title="线程安全-synchronized关键字">线程安全-synchronized关键字</a></li><li><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/" rel="bookmark" title="线程">线程</a></li><li><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-volatile%E5%85%B3%E9%94%AE%E5%AD%97/" rel="bookmark" title="线程安全-volatile关键字">线程安全-volatile关键字</a></li></ul></div><div class="overview panel" data-title="概要"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="751200" src="/assets/avatar.avif"><p class="name" itemprop="name">751200</p><div class="description" itemprop="description"></div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">8</span><span class="name">ポスト</span></a></div><div class="item categories"><a href="/categories/"><span class="count">4</span><span class="name">カテゴリ</span></a></div><div class="item tags"><a href="/tags/"><span class="count">6</span><span class="name">タグ</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/yourname" class="item github" title="https://github.com/yourname"><i class="ic i-github"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>ホーム</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-CAS/" rel="prev" title="前の記事"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/" rel="next" title="次の記事"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>ランダムな記事</h2><ul><li class="item"><div class="breadcrumb"></div><span><a href="/2026/03/12/hello-world/">Hello World</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/Java/" title="カテゴリJava">Java</a><i class="ic i-angle-right"></i><a href="/categories/Java/%E5%B9%B6%E5%8F%91/" title="カテゴリ并发">并发</a></div><span><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-synchronized%E5%85%B3%E9%94%AE%E5%AD%97/">线程安全-synchronized关键字</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/Java/" title="カテゴリJava">Java</a><i class="ic i-angle-right"></i><a href="/categories/Java/%E5%B9%B6%E5%8F%91/" title="カテゴリ并发">并发</a></div><span><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-CAS/">线程安全-CAS</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/Java/" title="カテゴリJava">Java</a><i class="ic i-angle-right"></i><a href="/categories/Java/%E5%8F%8D%E5%B0%84/" title="カテゴリ反射">反射</a></div><span><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84/">反射</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/Java/" title="カテゴリJava">Java</a><i class="ic i-angle-right"></i><a href="/categories/Java/%E5%B9%B6%E5%8F%91/" title="カテゴリ并发">并发</a></div><span><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/">线程</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/Java/" title="カテゴリJava">Java</a><i class="ic i-angle-right"></i><a href="/categories/Java/%E9%9B%86%E5%90%88/" title="カテゴリ集合">集合</a></div><span><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88/Collection/">Collection</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/Java/" title="カテゴリJava">Java</a><i class="ic i-angle-right"></i><a href="/categories/Java/%E5%8F%8D%E5%B0%84/" title="カテゴリ反射">反射</a></div><span><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88/Collection/ArrayList/">ArrayList</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/Java/" title="カテゴリJava">Java</a><i class="ic i-angle-right"></i><a href="/categories/Java/%E5%B9%B6%E5%8F%91/" title="カテゴリ并发">并发</a></div><span><a href="/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8-volatile%E5%85%B3%E9%94%AE%E5%AD%97/">线程安全-volatile关键字</a></span></li></ul></div><div class="rpost pjax"><h2>最近のコメント</h2></div></div><div class="status"><div class="copyright">© 2022 -<span itemprop="copyrightYear">2026</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">751200 @ 没想好写什么</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="単語の総数">10k 単語</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="読書の合計時間">9 分</span></div><div class="powered-by">Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> &amp; Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div></div></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2026/03/12/java基础/并发/线程安全-synchronized关键字/`,
+    favicon: {
+        show: `（●´3｀●）やれやれだぜ`,
+        hide: `(´Д｀)大変だ！`
+    },
+    search: {
+        placeholder: "検索…",
+        empty: "「 ${query} 」については何も見つかりませんでした",
+        stats: "${time} ms以内に ${hits} 件の結果が見つかりました"
+    },
+    nocopy: "false",
+    copyright: `コピーは成功しました。 <br> 再印刷については、 ％s 契約に従ってください。`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">記事の適時性の警告</span><br> {{publish}} 日前に公開され、 {{updated}} 日前に最終更新された記事です。 一部情報が変更されている可能性がありますので、ご了承ください。</p></div>`,
+    quiz: {
+        choice: `選択`,
+        multiple: `複数選択`,
+        true_false: `正誤`,
+        essay: `問答`,
+        gap_fill: `空欄`,
+        mistake: `間違った答え`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script></body></html>
