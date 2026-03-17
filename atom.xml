@@ -8,7 +8,202 @@
     <author>
       <name>751200</name>
     </author>
-    <updated>2026-03-12T09:00:00.000Z</updated>
+    <updated>2026-03-13T23:44:57.331Z</updated>
+    <entry>
+        <id>https://751200.github.io/2026/03/14/2026-03-14-redis%E8%B5%B7%E6%AD%A5-%E4%BA%94%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</id>
+        <title>Redis起步-五种基本数据类型</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/14/2026-03-14-redis%E8%B5%B7%E6%AD%A5-%E4%BA%94%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/"/>
+        <content type="html">&lt;h1 id=&#34;redis的五种数据类型&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#redis的五种数据类型&#34;&gt;#&lt;/a&gt; Redis的五种数据类型&lt;/h1&gt;
+&lt;p&gt;首先，对于redis来说所有的key都是String类型，所以需要关注的类型指的是value的类型。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;String字符串&lt;/strong&gt;：说是字符串，实际上包括了字符、整数和浮点数。可以对字符进行操作，也可以进行自增或自减&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;List列表&lt;/strong&gt;:内部是链表，可以对其进行push和pop，读取若干元素，查找或删除某个元素&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Set集合&lt;/strong&gt;:包含字符串的无序集合，操作类同Set&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hash散列&lt;/strong&gt;：包含键值对的无序散列表&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Zset有序集合&lt;/strong&gt;：和散列一样，用于存储键值对，元素的排列顺序由分数的大小决定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;string字符串&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#string字符串&#34;&gt;#&lt;/a&gt; String字符串&lt;/h2&gt;
+&lt;p&gt;最基本的数据类型，没有什么比这个更准确的形容了。&lt;/p&gt;
+&lt;p&gt;命令表格&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;简述&lt;/th&gt;
+&lt;th&gt;使用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;GET&lt;/td&gt;
+&lt;td&gt;获取存储在给定键中的值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;GET name&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SET&lt;/td&gt;
+&lt;td&gt;设置存储在给定键中的值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;SET name value&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DEL&lt;/td&gt;
+&lt;td&gt;删除存储在给定键中的值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;DEL name&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;INCR&lt;/td&gt;
+&lt;td&gt;将键存储的值加 1&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;INCR key&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DECR&lt;/td&gt;
+&lt;td&gt;将键存储的值减 1&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;DECR key&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;INCRBY&lt;/td&gt;
+&lt;td&gt;将键存储的值加上整数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;INCRBY key amount&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DECRBY&lt;/td&gt;
+&lt;td&gt;将键存储的值减去整数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;DECRBY key amount&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;list列表&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#list列表&#34;&gt;#&lt;/a&gt; List列表&lt;/h2&gt;
+&lt;p&gt;在Redis里面，List的实现是通过双端链表来实现的。&lt;br /&gt;
+由于其双端链表的原因，可以实现队列、栈等&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;简述&lt;/th&gt;
+&lt;th&gt;使用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;RPUSH&lt;/td&gt;
+&lt;td&gt;将给定值推入到列表右端&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;RPUSH key value&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LPUSH&lt;/td&gt;
+&lt;td&gt;将给定值推入到列表左端&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;LPUSH key value&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RPOP&lt;/td&gt;
+&lt;td&gt;从列表的右端弹出一个值，并返回被弹出的值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;RPOP key&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LPOP&lt;/td&gt;
+&lt;td&gt;从列表的左端弹出一个值，并返回被弹出的值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;LPOP key&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LRANGE&lt;/td&gt;
+&lt;td&gt;获取列表在给定范围上的所有值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;LRANGE key 0 -1&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LINDEX&lt;/td&gt;
+&lt;td&gt;通过索引获取列表中的元素。也可以使用负数下标，&lt;code&gt;-1&lt;/code&gt; 表示列表最后一个元素，&lt;code&gt;-2&lt;/code&gt; 表示倒数第二个元素，以此类推&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;LINDEX key index&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;set集合&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#set集合&#34;&gt;#&lt;/a&gt; Set集合&lt;/h2&gt;
+&lt;p&gt;Redis的Set是使用哈希表来实现的，所以它添加，删除，查找的复杂度都是 O(1)。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;简述&lt;/th&gt;
+&lt;th&gt;使用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;SADD&lt;/td&gt;
+&lt;td&gt;向集合添加一个或多个成员&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;SADD key value&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SCARD&lt;/td&gt;
+&lt;td&gt;获取集合的成员数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;SCARD key&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SMEMBERS&lt;/td&gt;
+&lt;td&gt;返回集合中的所有成员&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;SMEMBERS key&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SISMEMBER&lt;/td&gt;
+&lt;td&gt;判断 member 元素是否是集合 key 的成员&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;SISMEMBER key member&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;hash散列&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#hash散列&#34;&gt;#&lt;/a&gt; Hash散列&lt;/h2&gt;
+&lt;p&gt;看到散列两字可能会感到有点陌生，但它其实就是HashMap，或者说一个对象。&lt;br /&gt;
+它底层也是通过哈希表来实现的，它会创建field和value映射表。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;简述&lt;/th&gt;
+&lt;th&gt;使用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;HSET&lt;/td&gt;
+&lt;td&gt;添加键值对&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;HSET hash-key sub-key1 value1&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HGET&lt;/td&gt;
+&lt;td&gt;获取指定散列键的值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;HGET hash-key key1&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HGETALL&lt;/td&gt;
+&lt;td&gt;获取散列中包含的所有键值对&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;HGETALL hash-key&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HDEL&lt;/td&gt;
+&lt;td&gt;如果给定键存在于散列中，那么就移除这个键&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;HDEL hash-key sub-key1&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;zset有序集合&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#zset有序集合&#34;&gt;#&lt;/a&gt; Zset有序集合&lt;/h2&gt;
+&lt;p&gt;与Set最大的区别在于，它每个成员都关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序。&lt;/p&gt;
+&lt;p&gt;有序集合的实现是通过两种数据结构，我没学太深入所以就先放这：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;压缩列表(ziplist)&lt;/strong&gt;: ziplist是为了提高存储效率而设计的一种特殊编码的双向链表。它可以存储字符串或者整数，存储整数时是采用整数的二进制而不是字符串形式存储。它能在O(1)的时间复杂度下完成list两端的push和pop操作。但是因为每次操作都需要重新分配ziplist的内存，所以实际复杂度和ziplist的内存使用量相关&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;跳跃表（zSkiplist)&lt;/strong&gt;: 跳跃表的性能可以保证在查找，删除，添加等操作的时候在对数期望时间内完成，这个性能是可以和平衡树来相比较的，而且在实现方面比平衡树要优雅，这是采用跳跃表的主要原因。跳跃表的复杂度是O(log(n))。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;实战场景
+&lt;ul&gt;
+&lt;li&gt;排行榜：有序集合经典使用场景。例如小说视频等网站需要对用户上传的小说视频做排行榜，榜单可以按照用户关注数，更新时间，字数等打分，做排行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="redis" scheme="https://751200.github.io/categories/redis/" />
+        <category term="redis" scheme="https://751200.github.io/tags/redis/" />
+        <category term="入门" scheme="https://751200.github.io/tags/%E5%85%A5%E9%97%A8/" />
+        <category term="基础" scheme="https://751200.github.io/tags/%E5%9F%BA%E7%A1%80/" />
+        <category term="数据类型" scheme="https://751200.github.io/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" />
+        <updated>2026-03-13T23:44:57.331Z</updated>
+    </entry>
     <entry>
         <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84/</id>
         <title>反射</title>
@@ -65,6 +260,131 @@ LinkedList是双向链表，需要存储数据和两个指针，更占用内存&
         <category term="Java" scheme="https://751200.github.io/tags/Java/" />
         <category term="Collection" scheme="https://751200.github.io/tags/Collection/" />
         <category term="集合" scheme="https://751200.github.io/tags/%E9%9B%86%E5%90%88/" />
+        <updated>2026-03-12T09:00:00.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/</id>
+        <title>线程</title>
+        <link rel="alternate" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/"/>
+        <content type="html">&lt;h3 id=&#34;线程的创建&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#线程的创建&#34;&gt;#&lt;/a&gt; 线程的创建&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;继承 Thread 类（Java单继承机制，不推荐）。&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//就是继承，重写run，然后start()&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;class MyThread extends Thread &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    @Override&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    public void run() &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        System.out.println(&#34;线程执行&#34;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;new MyThread().start();&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实现 Runnable 接口（最常用，无返回值）。&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//Runnable就是Thread构造函数的一个参数&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;class MyRunnable implements Runnable &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    @Override&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    public void run() &amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        System.out.println(&#34;线程执行&#34;);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;new Thread(new MyRunnable()).start();&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实现 Callable 接口配合 FutureTask，(有返回值，能抛出异常）。&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//这里相当于上面的run方法，返回一个3&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;Callable&amp;#x3C;Integer&gt; task = () -&gt; 1 + 2;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//futureTask是适配器，因为Thread构造要传Runnable&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;FutureTask&amp;#x3C;Integer&gt; futureTask = new FutureTask&amp;#x3C;&gt;(task);&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;new Thread(futureTask).start();&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span&gt;Integer result = futureTask.get();&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过线程池创建（真实项目中的唯一规范做法）。&lt;/p&gt;
+&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;ExecutorService&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; pool&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; Executors&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;newFixedThreadPool&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2F798A;--shiki-dark:#4C9A91&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;pool&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;submit&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; -&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;    System&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt;线程执行&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;线程的生命周期&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#线程的生命周期&#34;&gt;#&lt;/a&gt; 线程的生命周期&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;新建&lt;/li&gt;
+&lt;li&gt;运行&lt;/li&gt;
+&lt;li&gt;阻塞&lt;/li&gt;
+&lt;li&gt;等待&lt;/li&gt;
+&lt;li&gt;超时等待&lt;/li&gt;
+&lt;li&gt;终止&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;常见方法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#常见方法&#34;&gt;#&lt;/a&gt; 常见方法&lt;/h2&gt;
+&lt;h3 id=&#34;sleep&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#sleep&#34;&gt;#&lt;/a&gt; sleep()&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;让线程休眠&lt;/li&gt;
+&lt;li&gt;不释放锁&lt;/li&gt;
+&lt;li&gt;Thread类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;wait&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#wait&#34;&gt;#&lt;/a&gt; wait()&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;让线程进入等待状态&lt;/li&gt;
+&lt;li&gt;会释放锁&lt;/li&gt;
+&lt;li&gt;会被notify()/notifyAll()唤醒&lt;/li&gt;
+&lt;li&gt;必须在synchronized中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;wait和sleep的区别&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#wait和sleep的区别&#34;&gt;#&lt;/a&gt; wait()和sleep()的区别&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;对比点&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;wait()&lt;/code&gt;&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;sleep()&lt;/code&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;所属类&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Object&lt;/code&gt; 类的方法&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Thread&lt;/code&gt; 类的方法&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;是否释放锁&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;会释放锁&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;不会释放锁&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;使用位置&lt;/td&gt;
+&lt;td&gt;必须在 &lt;strong&gt;synchronized 同步块/方法&lt;/strong&gt; 中使用&lt;/td&gt;
+&lt;td&gt;可以在任何地方使用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;唤醒方式&lt;/td&gt;
+&lt;td&gt;需要 &lt;code&gt;notify()&lt;/code&gt; / &lt;code&gt;notifyAll()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;时间到了自动恢复&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;使用目的&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;线程间通信&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;让线程休眠一段时间&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;join&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#join&#34;&gt;#&lt;/a&gt; join()&lt;/h3&gt;
+&lt;p&gt;等待某个线程执行完&lt;/p&gt;
+&lt;h3 id=&#34;notify和notifyall&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#notify和notifyall&#34;&gt;#&lt;/a&gt; notify()和notifyAll()&lt;/h3&gt;
+&lt;p&gt;随机唤醒一个等待线程和唤醒所有等待线程&lt;/p&gt;
+&lt;h4 id=&#34;为什么必须在synchronized中&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#为什么必须在synchronized中&#34;&gt;#&lt;/a&gt; 为什么必须在synchronized中&lt;/h4&gt;
+&lt;p&gt;IllegalMonitorStateException异常&lt;/p&gt;
+&lt;p&gt;因为它们操作的是对象的 Monitor 等待队列，只有持有对象锁的线程才能调用&lt;/p&gt;
+</content>
+        <category term="Java" scheme="https://751200.github.io/categories/Java/" />
+        <category term="并发" scheme="https://751200.github.io/categories/Java/%E5%B9%B6%E5%8F%91/" />
+        <category term="Java" scheme="https://751200.github.io/tags/Java/" />
+        <category term="并发" scheme="https://751200.github.io/tags/%E5%B9%B6%E5%8F%91/" />
         <updated>2026-03-12T09:00:00.000Z</updated>
     </entry>
     <entry>
@@ -202,131 +522,6 @@ hashcode&lt;br /&gt;
 偏向锁标志&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;加锁就是修改对象头的线程ID&lt;/p&gt;
-</content>
-        <category term="Java" scheme="https://751200.github.io/categories/Java/" />
-        <category term="并发" scheme="https://751200.github.io/categories/Java/%E5%B9%B6%E5%8F%91/" />
-        <category term="Java" scheme="https://751200.github.io/tags/Java/" />
-        <category term="并发" scheme="https://751200.github.io/tags/%E5%B9%B6%E5%8F%91/" />
-        <updated>2026-03-12T09:00:00.000Z</updated>
-    </entry>
-    <entry>
-        <id>https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/</id>
-        <title>线程</title>
-        <link rel="alternate" href="https://751200.github.io/2026/03/12/java%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91/%E7%BA%BF%E7%A8%8B/"/>
-        <content type="html">&lt;h3 id=&#34;线程的创建&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#线程的创建&#34;&gt;#&lt;/a&gt; 线程的创建&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;继承 Thread 类（Java单继承机制，不推荐）。&lt;/p&gt;
-&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//就是继承，重写run，然后start()&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;class MyThread extends Thread &amp;#123;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    @Override&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    public void run() &amp;#123;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        System.out.println(&#34;线程执行&#34;);&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;new MyThread().start();&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;实现 Runnable 接口（最常用，无返回值）。&lt;/p&gt;
-&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//Runnable就是Thread构造函数的一个参数&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;class MyRunnable implements Runnable &amp;#123;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    @Override&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    public void run() &amp;#123;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;        System.out.println(&#34;线程执行&#34;);&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;new Thread(new MyRunnable()).start();&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;实现 Callable 接口配合 FutureTask，(有返回值，能抛出异常）。&lt;/p&gt;
-&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//这里相当于上面的run方法，返回一个3&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;Callable&amp;#x3C;Integer&gt; task = () -&gt; 1 + 2;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;//futureTask是适配器，因为Thread构造要传Runnable&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;FutureTask&amp;#x3C;Integer&gt; futureTask = new FutureTask&amp;#x3C;&gt;(task);&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;new Thread(futureTask).start();&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span&gt;Integer result = futureTask.get();&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;通过线程池创建（真实项目中的唯一规范做法）。&lt;/p&gt;
-&lt;pre class=&#34;shiki shiki-themes vitesse-light vitesse-dark&#34; style=&#34;background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee&#34; tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#393A34;--shiki-dark:#DBD7CAEE&#34;&gt;ExecutorService&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; pool&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; =&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt; Executors&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;newFixedThreadPool&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#2F798A;--shiki-dark:#4C9A91&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;pool&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;submit&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; -&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;&gt;&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;    System&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#B07D48;--shiki-dark:#BD976A&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#59873A;--shiki-dark:#80A665&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;span style=&#34;color:#B56959;--shiki-dark:#C98A7D&#34;&gt;线程执行&lt;/span&gt;&lt;span style=&#34;color:#B5695977;--shiki-dark:#C98A7D77&#34;&gt;&#34;&lt;/span&gt;&lt;span style=&#34;color:#a65e2b;--shiki-dark:#d4976c&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&#34;line&#34;&gt;&lt;span style=&#34;color:#1e754f;--shiki-dark:#4d9375&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span style=&#34;color:#2993a3;--shiki-dark:#5eaab5&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#999999;--shiki-dark:#666666&#34;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;线程的生命周期&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#线程的生命周期&#34;&gt;#&lt;/a&gt; 线程的生命周期&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;新建&lt;/li&gt;
-&lt;li&gt;运行&lt;/li&gt;
-&lt;li&gt;阻塞&lt;/li&gt;
-&lt;li&gt;等待&lt;/li&gt;
-&lt;li&gt;超时等待&lt;/li&gt;
-&lt;li&gt;终止&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;常见方法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#常见方法&#34;&gt;#&lt;/a&gt; 常见方法&lt;/h2&gt;
-&lt;h3 id=&#34;sleep&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#sleep&#34;&gt;#&lt;/a&gt; sleep()&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;让线程休眠&lt;/li&gt;
-&lt;li&gt;不释放锁&lt;/li&gt;
-&lt;li&gt;Thread类&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;wait&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#wait&#34;&gt;#&lt;/a&gt; wait()&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;让线程进入等待状态&lt;/li&gt;
-&lt;li&gt;会释放锁&lt;/li&gt;
-&lt;li&gt;会被notify()/notifyAll()唤醒&lt;/li&gt;
-&lt;li&gt;必须在synchronized中&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;wait和sleep的区别&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#wait和sleep的区别&#34;&gt;#&lt;/a&gt; wait()和sleep()的区别&lt;/h3&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;对比点&lt;/th&gt;
-&lt;th&gt;&lt;code&gt;wait()&lt;/code&gt;&lt;/th&gt;
-&lt;th&gt;&lt;code&gt;sleep()&lt;/code&gt;&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;所属类&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;Object&lt;/code&gt; 类的方法&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;Thread&lt;/code&gt; 类的方法&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;是否释放锁&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;会释放锁&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;不会释放锁&lt;/strong&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;使用位置&lt;/td&gt;
-&lt;td&gt;必须在 &lt;strong&gt;synchronized 同步块/方法&lt;/strong&gt; 中使用&lt;/td&gt;
-&lt;td&gt;可以在任何地方使用&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;唤醒方式&lt;/td&gt;
-&lt;td&gt;需要 &lt;code&gt;notify()&lt;/code&gt; / &lt;code&gt;notifyAll()&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;时间到了自动恢复&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;使用目的&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;线程间通信&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;让线程休眠一段时间&lt;/strong&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h3 id=&#34;join&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#join&#34;&gt;#&lt;/a&gt; join()&lt;/h3&gt;
-&lt;p&gt;等待某个线程执行完&lt;/p&gt;
-&lt;h3 id=&#34;notify和notifyall&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#notify和notifyall&#34;&gt;#&lt;/a&gt; notify()和notifyAll()&lt;/h3&gt;
-&lt;p&gt;随机唤醒一个等待线程和唤醒所有等待线程&lt;/p&gt;
-&lt;h4 id=&#34;为什么必须在synchronized中&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#为什么必须在synchronized中&#34;&gt;#&lt;/a&gt; 为什么必须在synchronized中&lt;/h4&gt;
-&lt;p&gt;IllegalMonitorStateException异常&lt;/p&gt;
-&lt;p&gt;因为它们操作的是对象的 Monitor 等待队列，只有持有对象锁的线程才能调用&lt;/p&gt;
 </content>
         <category term="Java" scheme="https://751200.github.io/categories/Java/" />
         <category term="并发" scheme="https://751200.github.io/categories/Java/%E5%B9%B6%E5%8F%91/" />
